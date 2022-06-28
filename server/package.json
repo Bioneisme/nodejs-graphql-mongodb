@@ -15,7 +15,7 @@
     "mongodb",
     "graphql",
     "jsonwebtoken",
-    "bcryptjs",
+    "bcrypt",
     "async await"
   ],
   "scripts": {
@@ -24,7 +24,6 @@
   "dependencies": {
     "apollo-server": "^2.9.3",
     "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
     "graphql": "^14.5.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.1"

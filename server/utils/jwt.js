@@ -1,24 +1,30 @@
 const jwt = require("jsonwebtoken")
+const UserModel = require('../models/user-model')
 
 const getToken = data => {
     const payload = {
         username: data.username,
         password: data.password,
-        token: data.token
     }
     return jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: 604800, // 1 Week - 604800
     })
 }
 
-const getPayload = token => {
+const getPayload = async token => {
     try {
-        const payload = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
+        const bToken = token.split(' ')[1]
+        const payload = jwt.verify(bToken, process.env.JWT_SECRET)
+        const user = await UserModel.findOne({username: payload.username, token: bToken})
 
-        return { loggedIn: true, payload };
+        if (user)
+            return {user, loggedIn: true}
+        else
+            // TODO: Error Message (Invalid Token)
+            return {loggedIn: false}
     } catch (err) {
         // TODO: Add Error Message
-        return { loggedIn: false }
+        return {loggedIn: false}
     }
 }
 

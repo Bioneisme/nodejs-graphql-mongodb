@@ -1,16 +1,16 @@
-const {ApolloServer} = require('apollo-server');
-const {typeDefs} = require("./typeDefs");
-const {resolvers} = require("./resolvers");
-const {getPayload} = require('./utils/jwt');
+const {ApolloServer} = require('apollo-server')
+const {typeDefs} = require("./graphql/typeDefs")
+const {resolvers} = require("./graphql/resolvers")
+const {getPayload} = require('./utils/jwt')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({req}) => {
+    context: async ({req}) => {
         const token = req.headers.authorization || '';
-        const {payload: user, loggedIn} = getPayload(token);
+        const {user, loggedIn} = await getPayload(token);
 
         return {user, loggedIn};
     },

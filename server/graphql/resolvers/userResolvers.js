@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt')
-const {getToken} = require('../utils/jwt')
-const UserModel = require('../models/user-model')
+const {getToken} = require('../../utils/jwt')
+const UserModel = require('../../models/user-model')
 
 const {AuthenticationError} = require('apollo-server');
 
 const userResolvers = {
     Query: {
         user: (parent, args, context, info) => {
-            console.log(context)
+
             if (context.loggedIn) {
                 return context.user
             } else {
@@ -18,7 +18,7 @@ const userResolvers = {
     Mutation: {
         register: async (parent, args, context, info) => {
             const {username, password} = args
-            const hashPassword = bcrypt.hash(password, 10)
+            const hashPassword = await bcrypt.hash(password, 10)
 
             const user = await UserModel.findOne({username: username})
             if (user) {
@@ -29,7 +29,7 @@ const userResolvers = {
                     username,
                     password: hashPassword
                 })
-                newUser.token = getToken(user)
+                newUser.token = getToken(newUser)
                 await newUser.save()
 
                 return newUser
