@@ -1,0 +1,36 @@
+{
+  "name": "apollo-server-jwt-auth",
+  "version": "1.0.0",
+  "description": "JWT token based authentication for Node.js GraphQL Apollo Server 2.0",
+  "main": "index.js",
+  "author": "Bioneisme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "jwt",
+    "apollo server",
+    "mongodb",
+    "graphql",
+    "jsonwebtoken",
+    "bcryptjs",
+    "async await"
+  ],
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.9.3",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^14.5.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1",
+    "nodemon": "^2.0.18"
+  }
+}
