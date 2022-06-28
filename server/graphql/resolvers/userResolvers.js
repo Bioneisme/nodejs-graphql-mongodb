@@ -17,16 +17,16 @@ const userResolvers = {
     },
     Mutation: {
         register: async (parent, args, context, info) => {
-            const {username, password} = args
+            const {email, password} = args
             const hashPassword = await bcrypt.hash(password, 10)
 
-            const user = await UserModel.findOne({username: username})
+            const user = await UserModel.findOne({email: email})
             if (user) {
                 throw new AuthenticationError("User Already Exists!")
             }
             try {
                 const newUser = await UserModel.create({
-                    username,
+                    email,
                     password: hashPassword
                 })
                 newUser.token = getToken(newUser)
@@ -39,8 +39,8 @@ const userResolvers = {
             }
         },
         login: async (parent, args, context, info) => {
-            const {username, password} = args
-            const user = await UserModel.findOne({username: username})
+            const {email, password} = args
+            const user = await UserModel.findOne({email: email})
             if (!user) throw new AuthenticationError("User with this email doesnt exists")
 
             const isPassEquals = await bcrypt.compare(password, user.password)
@@ -51,7 +51,7 @@ const userResolvers = {
 
                 return user
             } else {
-                throw new AuthenticationError("Wrong Password or Username!")
+                throw new AuthenticationError("Wrong Password or email!")
             }
         },
     }

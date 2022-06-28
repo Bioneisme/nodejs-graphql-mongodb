@@ -2,7 +2,7 @@ const { gql } = require("apollo-server");
 
 const userType = gql`
   type User {
-    username: String!
+    email: String!
     password: String!
     token: String
   }

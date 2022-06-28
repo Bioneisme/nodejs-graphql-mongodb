@@ -3,7 +3,7 @@ const UserModel = require('../models/user-model')
 
 const getToken = data => {
     const payload = {
-        username: data.username,
+        email: data.email,
         password: data.password,
     }
     return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -15,7 +15,7 @@ const getPayload = async token => {
     try {
         const bToken = token.split(' ')[1]
         const payload = jwt.verify(bToken, process.env.JWT_SECRET)
-        const user = await UserModel.findOne({username: payload.username, token: bToken})
+        const user = await UserModel.findOne({email: payload.email, token: bToken})
 
         if (user)
             return {user, loggedIn: true}
