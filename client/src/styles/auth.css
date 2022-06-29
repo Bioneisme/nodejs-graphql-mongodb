@@ -51,7 +51,11 @@ body {
     }
 }
 @media screen and (max-width: 768px) {
-    .gradient {
-        height: 120vh;
+    .auth-container {
+        height: 120vw;
+    }
+
+    .signup-container {
+        height: 180vw;
     }
 }

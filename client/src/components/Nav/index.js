@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import Auth from "../../utils/auth";
 import {Link} from "react-router-dom";
 import "../../styles/navbar.css"
@@ -54,6 +54,7 @@ function Nav() {
     return (
         <header className="navigation">
             <Link to="/" className="brand-name">
+                <img src="/favicon.png" alt="favicon" height="32" className="mx-2" />
                 <span>
                     Quiz Evolve
                 </span>
