@@ -1,6 +1,9 @@
 import React from "react";
 
-const Home = () => {
+function Home() {
+    React.useEffect(() => {
+        document.body.style.background = "white"
+    })
     return (
         <div className="container">
             <article>
