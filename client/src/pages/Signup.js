@@ -21,7 +21,7 @@ function Signup(props) {
                 // lastName: formState.lastName,
             },
         });
-        window.location.assign('/login');
+        window.location.assign('/login?r');
     };
 
     const handleChange = (event) => {
@@ -110,7 +110,7 @@ function Signup(props) {
                     </form>
                     <br/>
                     <p>Already have an account?
-                        <Link className="signup" to="/login"> Log In</Link>
+                        <Link className="signup" to="/login?r"> Log In</Link>
                     </p>
                 </div>
             </div>

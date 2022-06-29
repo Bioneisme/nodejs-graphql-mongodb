@@ -10,10 +10,6 @@ function Login(props) {
     const [formState, setFormState] = useState({email: '', password: ''});
     const [login, {error}] = useMutation(LOGIN);
 
-    useEffect(() => {
-        document.body.style.background = ""
-    })
-
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -34,6 +30,13 @@ function Login(props) {
             [name]: value,
         });
     };
+
+    useEffect(() => {
+        if (window.location.search === '') {
+            window.location.reload()
+            window.location.search = "r"
+        }
+    }, []);
 
     return (
             <div className="auth-container">

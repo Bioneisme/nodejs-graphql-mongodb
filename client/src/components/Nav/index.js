@@ -24,14 +24,9 @@ function Nav() {
                 <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu mx-4"}>
                     <ul>
                         <li>
-                            <Link to="/">
+                            <Link to="/profile">
                                 { email }
                             </Link>
-                        </li>
-                        <li>
-                            <a href="#" onClick={Auth.logout}>
-                                Logout
-                            </a>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +49,7 @@ function Nav() {
     return (
         <header className="navigation">
             <Link to="/" className="brand-name">
-                <img src="/favicon.png" alt="favicon" height="32" className="mx-2" />
+                <img src="https://res.cloudinary.com/dluwizg51/image/upload/v1656498085/favicon_twx90v.png" alt="favicon" height="32" className="mx-2" />
                 <span>
                     Quiz Evolve
                 </span>
