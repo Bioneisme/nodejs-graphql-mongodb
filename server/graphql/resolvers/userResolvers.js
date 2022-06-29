@@ -1,6 +1,11 @@
 const bcrypt = require('bcrypt')
+const randomString = require('randomstring')
 const {getToken} = require('../../utils/jwt')
+
 const UserModel = require('../../models/user-model')
+const CodeModel = require('../../models/confirmationCode')
+
+const userService = require('../../service/userService')
 
 const {AuthenticationError} = require('apollo-server');
 
@@ -18,6 +23,7 @@ const userResolvers = {
     Mutation: {
         register: async (parent, args, context, info) => {
             const {email, password} = args
+
             const hashPassword = await bcrypt.hash(password, 10)
 
             const user = await UserModel.findOne({email: email})
@@ -31,6 +37,12 @@ const userResolvers = {
                 })
                 newUser.token = getToken(newUser)
                 await newUser.save()
+                const code = randomString.generate({length:4,charset:'alphabetic'});
+
+                //sending confirmation code
+                await userService.createCode(newUser.email,code)
+                await userService.sendCode(newUser.email,code)
+                //
 
                 return newUser
             }
