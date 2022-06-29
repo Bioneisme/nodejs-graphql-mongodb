@@ -5,6 +5,7 @@
     width: 100vw;
     height: 45vw;
 }
+
 .signup-container {
     display: flex;
     justify-content: center;
@@ -12,6 +13,7 @@
     width: 100vw;
     height: 60vw;
 }
+
 .auth {
     width: 450px;
     box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
@@ -20,18 +22,22 @@
     border-radius: 8px;
     background-color: white;
 }
+
 .auth-content {
     padding-left: 12%;
     padding-right: 12%;
 }
+
 label {
     font-size: 14px;
     font-weight: 600;
     color: rgb(34, 34, 34);
 }
+
 .signup {
     text-decoration: none;
 }
+
 body {
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
@@ -50,12 +56,20 @@ body {
         background-position: 0% 50%;
     }
 }
+
 @media screen and (max-width: 768px) {
+    body {
+        height: 200vh;
+    }
     .auth-container {
-        height: 120vw;
+        height: 150vw;
+    }
+
+    .auth {
+        width: 300px;
     }
 
     .signup-container {
-        height: 180vw;
+        height: 210vw;
     }
 }
