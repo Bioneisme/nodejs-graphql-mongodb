@@ -3,6 +3,8 @@ import Auth from "../../utils/auth";
 import {Link} from "react-router-dom";
 import "../../styles/navbar.css"
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function Nav() {
     const [email, setEmail] = useState(null)
     const [isNavExpanded, setIsNavExpanded] = useState(false)
@@ -19,16 +21,16 @@ function Nav() {
     function showNavigation() {
         if (Auth.loggedIn()) {
             return (
-                <div className="navigation-menu">
+                <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu mx-4"}>
                     <ul>
                         <li>
-                            <a href="/" onClick={() => Auth.logout()}>
-                                Logout
-                            </a>
+                            <Link to="/">
+                                { email }
+                            </Link>
                         </li>
                         <li>
-                            <a>
-                                {email}
+                            <a href="#" onClick={Auth.logout}>
+                                Logout
                             </a>
                         </li>
                     </ul>
@@ -36,13 +38,8 @@ function Nav() {
             );
         } else {
             return (
-                <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu"}>
+                <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu mx-4"}>
                     <ul>
-                        <li>
-                            <Link to="/signup">
-                                Signup
-                            </Link>
-                        </li>
                         <li>
                             <Link to="/login">
                                 Login
@@ -61,7 +58,6 @@ function Nav() {
                     Quiz Evolve
                 </span>
             </Link>
-
             <button className="hamburger" onClick={() => {
                 setIsNavExpanded(!isNavExpanded)
             }}>

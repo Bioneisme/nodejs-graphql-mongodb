@@ -3,7 +3,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    position: relative;
+    position: fixed;
     padding: 0.5rem;
     background-color: #fff;
     color: black;
@@ -19,11 +19,13 @@
 
 .navigation-menu {
     margin-left: auto;
+    position: absolute;
+    top: 30%;
+    right: 50px;
 }
 
 .navigation-menu ul {
     display: flex;
-    padding: 0;
 }
 
 .navigation-menu li {
@@ -70,6 +72,11 @@
 }
 
 @media screen and (max-width: 768px) {
+    .navigation-menu {
+        position: unset;
+        right: 0;
+        top: 100%;
+    }
     .navigation-menu ul {
         position: absolute;
         top: 60px;
