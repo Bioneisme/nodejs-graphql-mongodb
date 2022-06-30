@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 
 const UserModel = require('../models/user-model');
 const CodeModel = require('../models/confirmationCode');
+
 const password = process.env.NODEMAILER_EMAIL_PASSWORD;
 const email = process.env.NODEMAILER_EMAIL_USERNAME;
 
@@ -27,27 +28,23 @@ class userService {
             throw new Error(e);
         }
     }
+
     async sendCode(email, code) {
         try {
             const confirmationMessage = `<h2 style="color:#ff6600;">hello welcome to quiz.evolve here is your account  confirmation code :${code} </h2>`
             const mailOptions = {
-                from: process.env.NODEMAILER_EMAIL_USERNAME, // Sender address
-                to: email, // List of recipients
-                subject: 'Quiz evolve', // Subject line
+                from: process.env.NODEMAILER_EMAIL_USERNAME,
+                to: email,
+                subject: 'Quiz evolve',
                 html: confirmationMessage,
             };
 
-            await transport.sendMail(mailOptions, function (err, info) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log(info);
-                }
-            });
+            await transport.sendMail(mailOptions);
         } catch (e) {
-            throw new Error(e)
+            console.log(e)
         }
     }
+
     async checkCode(email, code) {
         const confirmation = await CodeModel.findOne({user: email});
         if (!confirmation) return false
@@ -56,8 +53,7 @@ class userService {
             await CodeModel.findOne({user: email, code: code}, {user: 1}).lean().deleteOne()
             await UserModel.findOneAndUpdate({email: email}, {confirmed: true})
             return true
-        }
-        else return false
+        } else return false
     }
 }
 

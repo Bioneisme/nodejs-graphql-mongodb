@@ -1,8 +1,7 @@
-const { userResolvers } = require('./userResolvers');
+const {userResolvers} = require('./userResolvers');
 const {codeResolvers} = require('./confirmationCodeResolver')
-const TestResolvers = require('./testResolver')
-const resolvers = [userResolvers,codeResolvers,TestResolvers];
+const resolvers = [userResolvers, codeResolvers];
 
 module.exports = {
-  resolvers,
+    resolvers,
 };

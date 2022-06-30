@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+const {gql} = require("apollo-server-express");
 
 const query = gql`
   type Query {
@@ -10,10 +10,9 @@ const query = gql`
     register(email: String!, password: String!): User
     login(email: String!, password: String!): User
     confirmAccount(code:String!):User
-    uploadFile(fileSaveName : String) : fileMetadata
   }
 `;
 
 module.exports = {
-  query,
+    query,
 };

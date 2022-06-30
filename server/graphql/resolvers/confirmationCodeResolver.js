@@ -1,27 +1,22 @@
 const userService = require('../../service/userService')
+const {ValidationError} = require('apollo-server-express');
 
-const {getPayload} = require('../../utils/jwt');
-const {AuthenticationError} = require('apollo-server');
-const codeResolvers={
-    Query:{
-
-    },
-    Mutation:{
-        confirmAccount:async=(parent,args,context,info)=>{
+const codeResolvers = {
+    Query: {},
+    Mutation: {
+        confirmAccount: async (parent, args, context, info) => {
             const {code} = args;
-            console.log(code)
-            console.log(context.loggedIn);
-            const result =userService.checkCode(context.user.email,code);
-            if(result ===true) {
-                return 'An account has been confirmed';
-            }else{
-
+            const result = await userService.checkCode(context.user.email, code);
+            if (result) {
+                return context.user
+            } else {
+                return new ValidationError('The code is not match')
             }
         }
     }
 }
 
 
-module.exports={
+module.exports = {
     codeResolvers
 }

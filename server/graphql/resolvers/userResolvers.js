@@ -3,17 +3,16 @@ const randomString = require('randomstring')
 const {getToken} = require('../../utils/jwt')
 
 const UserModel = require('../../models/user-model')
-const CodeModel = require('../../models/confirmationCode')
 
 const userService = require('../../service/userService')
 
-const {AuthenticationError} = require('apollo-server');
+const {AuthenticationError} = require('apollo-server-express');
 
 const userResolvers = {
     Query: {
-        user: (parent, args, context, info) => {
-
+        user: (_, args, context) => {
             if (context.loggedIn) {
+                console.log(context.user)
                 return context.user
             } else {
                 throw new AuthenticationError("Please Login Again!")
@@ -21,7 +20,7 @@ const userResolvers = {
         }
     },
     Mutation: {
-        register: async (parent, args, context, info) => {
+        register: async (_, args) => {
             const {email, password} = args
 
             const hashPassword = await bcrypt.hash(password, 10)
@@ -37,20 +36,18 @@ const userResolvers = {
                 })
                 newUser.token = getToken(newUser)
                 await newUser.save()
-                const code = randomString.generate({length:4,charset:'alphabetic'});
+                const code = randomString.generate({length: 4, charset: 'alphabetic'});
 
                 //sending confirmation code
-                await userService.createCode(newUser.email,code)
-                await userService.sendCode(newUser.email,code)
-                //
+                await userService.createCode(newUser.email, code)
+                await userService.sendCode(newUser.email, code)
 
                 return newUser
-            }
-             catch (e) {
+            } catch (e) {
                 throw e
             }
         },
-        login: async (parent, args, context, info) => {
+        login: async (_, args) => {
             const {email, password} = args
             const user = await UserModel.findOne({email: email})
             if (!user) throw new AuthenticationError("User with this email doesnt exists")
