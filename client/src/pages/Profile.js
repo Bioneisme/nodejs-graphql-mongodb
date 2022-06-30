@@ -1,50 +1,46 @@
 import React, {useEffect, useState} from "react";
-import {UPLOAD_AVATAR} from '../utils/mutations';
-import {useMutation} from '@apollo/client';
+import {useForm} from "react-hook-form";
 
 import "../styles/profile.css"
 import Auth from "../utils/auth";
+import {useQuery} from "@apollo/client";
+import {QUERY_USER} from "../utils/queries";
 
 function Profile() {
-    const [uploadAvatarMutation] = useMutation(UPLOAD_AVATAR);
-    const [avatar, setAvatar] = useState(null);
-
-    const handleChange = (e) => {
-        setAvatar(e.target.files[0]);
-    };
-
-    const handleClick = () => {
-        uploadAvatarMutation({
-            variables: {
-                avatar
-            }
-        });
+    const {loading, error, data} = useQuery(QUERY_USER);
+    let user
+    if (data) {
+        user = data.user
     }
-    const [email, setEmail] = useState(null)
-    const [firstName, setFirstName] = useState(null)
-    const [lastName, setLastName] = useState(null)
-    const [phone, setPhone] = useState(null)
+
+    const {register, handleSubmit} = useForm();
 
     useEffect(() => {
-            try {
-                const profile = Auth.getProfile()
-                if (Auth.loggedIn()) {
-                    setEmail(profile.email)
-                    setFirstName(profile.first_name)
-                    setLastName(profile.last_name)
-                    setPhone(profile.phone)
-                }
-                if (window.location.pathname === '/profile')
-                    window.location.href = "/profile/" + profile.email
-            } catch (e) {
-                window.location.href = '/login?r'
-            }
-
+        try {
+            if (window.location.pathname === '/profile')
+                window.location.href = "/profile/" + user.email
         }
-        ,
-        []
-    )
-    ;
+        catch (e) {
+            console.log(e)
+        }
+    })
+
+    const onSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append("avatar", data.file[0]);
+        formData.append("email", user.email);
+
+        setTimeout(function(){
+            window.location.reload();
+        }, 2000);
+
+        await fetch("http://localhost:4000/api/avatar", {
+            method: "POST",
+            body: formData,
+        })
+    };
+
+    if (loading) return 'Loading...'
 
     return (
         <div className="container">
@@ -58,23 +54,25 @@ function Profile() {
                                  height="19" className="mx-1 logout"/>
                         </div>
                         <hr/>
-                        <p>Email: <input className="input" value={email} readOnly/></p>
-                        <p>First Name: <input className="input" value={firstName} readOnly/></p>
-                        <p>Last Name: <input className="input" value={lastName} readOnly/></p>
-                        <p>Phone: <input className="input" value={phone} readOnly/></p>
+                        <img className="avatar" src={user.image} />
+                        <p>Email: <input className="input" value={user.email} readOnly/></p>
+                        <p>First Name: <input className="input" value="" readOnly/></p>
+                        <p>Last Name: <input className="input" value="" readOnly/></p>
+                        <p>Phone: <input className="input" value="" readOnly/></p>
                         <hr/>
                         <div>
-                            <input id="logo" type="file" onChange={handleChange}/>
-                            <button type="button" onClick={handleClick}>
-                                Submit
-                            </button>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <input name="avatar" type="file" {...register("file")} />
+
+                                <input type="submit" />
+                            </form>
                         </div>
                         <br/>
                     </fieldset>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default Profile;

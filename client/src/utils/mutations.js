@@ -15,11 +15,3 @@ export const ADD_USER = gql`
     }
   }
 `;
-
-export const UPLOAD_AVATAR = gql`
-    mutation uploadAvatar($avatar: Upload) {
-        uploadAvatar(avatar: $avatar) {
-        id
-    }
-  }
-`;
