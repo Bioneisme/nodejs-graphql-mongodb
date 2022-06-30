@@ -1,9 +1,25 @@
 import React, {useEffect, useState} from "react";
+import {UPLOAD_AVATAR} from '../utils/mutations';
+import {useMutation} from '@apollo/client';
 
 import "../styles/profile.css"
 import Auth from "../utils/auth";
 
 function Profile() {
+    const [uploadAvatarMutation] = useMutation(UPLOAD_AVATAR);
+    const [avatar, setAvatar] = useState(null);
+
+    const handleChange = (e) => {
+        setAvatar(e.target.files[0]);
+    };
+
+    const handleClick = () => {
+        uploadAvatarMutation({
+            variables: {
+                avatar
+            }
+        });
+    }
     const [email, setEmail] = useState(null)
     const [firstName, setFirstName] = useState(null)
     const [lastName, setLastName] = useState(null)
@@ -47,6 +63,12 @@ function Profile() {
                         <p>Last Name: <input className="input" value={lastName} readOnly/></p>
                         <p>Phone: <input className="input" value={phone} readOnly/></p>
                         <hr/>
+                        <div>
+                            <input id="logo" type="file" onChange={handleChange}/>
+                            <button type="button" onClick={handleClick}>
+                                Submit
+                            </button>
+                        </div>
                         <br/>
                     </fieldset>
                 </div>
