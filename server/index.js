@@ -1,9 +1,12 @@
 const express = require('express')
 const {ApolloServer} = require('apollo-server-express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+
+const mainRouter = require('./router/mainRouter')
 const {typeDefs} = require("./graphql/typeDefs")
 const {resolvers} = require("./graphql/resolvers")
 const {getPayload} = require('./utils/jwt')
-const mongoose = require('mongoose')
 require('dotenv').config()
 
 const app = express();
@@ -31,5 +34,11 @@ async function start() {
         console.log(process.env.SERVER_URL + '/graphql')
     })
 }
+
+app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/api', mainRouter)
 
 start().then()

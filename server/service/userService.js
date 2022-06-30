@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const nodemailer = require('nodemailer');
 
-const UserModel = require('../models/user-model');
+const UserModel = require('../models/userModel');
 const CodeModel = require('../models/confirmationCode');
 
 const password = process.env.NODEMAILER_EMAIL_PASSWORD;

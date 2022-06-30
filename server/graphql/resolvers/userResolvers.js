@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const randomString = require('randomstring')
 const {getToken} = require('../../utils/jwt')
 
-const UserModel = require('../../models/user-model')
+const UserModel = require('../../models/userModel')
 
 const userService = require('../../service/userService')
 
@@ -10,7 +10,7 @@ const {AuthenticationError} = require('apollo-server-express');
 
 const userResolvers = {
     Query: {
-        user: (_, args, context) => {
+        user: (parent, args, context, info) => {
             if (context.loggedIn) {
                 console.log(context.user)
                 return context.user
@@ -20,7 +20,7 @@ const userResolvers = {
         }
     },
     Mutation: {
-        register: async (_, args) => {
+        register: async (parent, args, context, info) => {
             const {email, password} = args
 
             const hashPassword = await bcrypt.hash(password, 10)
@@ -47,7 +47,7 @@ const userResolvers = {
                 throw e
             }
         },
-        login: async (_, args) => {
+        login: async (parent, args, context, info) => {
             const {email, password} = args
             const user = await UserModel.findOne({email: email})
             if (!user) throw new AuthenticationError("User with this email doesnt exists")
